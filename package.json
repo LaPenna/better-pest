@@ -2,8 +2,8 @@
     "name": "better-pest",
     "displayName": "Better Pest",
     "description": "A better Pest test runner",
-    "version": "0.1.0",
-    "publisher": "m1guelpf",
+    "version": "0.2.0",
+    "publisher": "La Penna",
     "engines": {
         "vscode": "^1.17.0"
     },
