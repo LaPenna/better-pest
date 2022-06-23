@@ -8,6 +8,6 @@
         }
     ],
     "require": {
-        "phpunit/phpunit": "^6.4"
+        "pestphp/pest": "^1.21"
     }
 }

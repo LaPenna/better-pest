@@ -77,13 +77,30 @@ async function runCommand(command) {
     vscode.window.activeTextEditor
         || vscode.window.showErrorMessage('Better Pest: open a file to run this command');
 
-    await vscode.commands.executeCommand('workbench.action.terminal.clear');
-    await vscode.commands.executeCommand('workbench.action.tasks.runTask', 'pest: run');
+    runInTerminal();
 }
 
 async function runPreviousCommand() {
+    vscode.commands.executeCommand('workbench.action.terminal.clear');
+    runInTerminal();
+}
+
+async function runInTerminal() {
+    const pestTerminal = getPestTerminal();
+    await pestTerminal.show();
     await vscode.commands.executeCommand('workbench.action.terminal.clear');
-    await vscode.commands.executeCommand('workbench.action.tasks.runTask', 'pest: run');
+    await pestTerminal.sendText(globalCommand.output.trim());
+
+    // re-focus editor
+    await vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+    await vscode.window.showTextDocument(vscode.window.activeTextEditor.document);
+}
+
+function getPestTerminal() {
+    const terminals = vscode.window.terminals;
+
+    return terminals.find(terminal => terminal.name === 'Better Pest') ||
+        vscode.window.createTerminal('Better Pest');
 }
 
 function setGlobalCommandInstance(commandInstance) {
