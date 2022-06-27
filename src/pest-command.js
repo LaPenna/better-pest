@@ -35,6 +35,13 @@ module.exports = class PestCommand {
     }
 
     get file() {
+        if (vscode.workspace.getConfiguration('better-phpunit').get('testDirectory')) {
+            let testDir = vscode.workspace.getConfiguration('better-phpunit').get('testDirectory');
+            let filename = vscode.window.activeTextEditor.document.fileName.replace(new RegExp(`.+?(?=${testDir})`), '');
+
+            return this._normalizePath(`./${filename}`);
+        }
+
         return this._normalizePath(vscode.window.activeTextEditor.document.fileName);
     }
 
@@ -58,20 +65,20 @@ module.exports = class PestCommand {
         return suffix ? ' ' + suffix : ''; // Add a space before the suffix.
     }
 
-	get windowsSuffix() {
+    get windowsSuffix() {
         return process.platform === "win32"
             ? '.bat'
             : '';
     }
 
     get binary() {
-        if (vscode.workspace.getConfiguration('better-pest').get('pestBinary')) {
-            return vscode.workspace.getConfiguration('better-pest').get('pestBinary')
+        if (vscode.workspace.getConfiguration('better-phpunit').get('pestBinary')) {
+            return vscode.workspace.getConfiguration('better-phpunit').get('pestBinary')
         }
 
         return this.subDirectory
-            ? this._normalizePath(path.join(this.subDirectory, 'vendor', 'bin', 'pest'+this.windowsSuffix))
-            : this._normalizePath(path.join(vscode.workspace.rootPath, 'vendor', 'bin', 'pest'+this.windowsSuffix));
+            ? this._normalizePath(path.join(this.subDirectory, 'vendor', 'bin', 'pest' + this.windowsSuffix))
+            : this._normalizePath(path.join(vscode.workspace.rootPath, 'vendor', 'bin', 'pest' + this.windowsSuffix));
     }
 
     get subDirectory() {
@@ -89,8 +96,8 @@ module.exports = class PestCommand {
 
         while (line > 0) {
             const lineText = vscode.window.activeTextEditor.document.lineAt(line).text;
-            const match = lineText.match(/^\s*(?:it|test)\(([^,)]+)/m) || 
-                          lineText.match(/^\s*(?:public|private|protected)?\s*function\s*(\w+)\s*\(.*$/);
+            const match = lineText.match(/^\s*(?:it|test)\(([^,)]+)/m) ||
+                lineText.match(/^\s*(?:public|private|protected)?\s*function\s*(\w+)\s*\(.*$/);
             if (match) {
                 method = match[1];
                 break;

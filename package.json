@@ -73,6 +73,14 @@
                     "default": null,
                     "description": "A custom pest binary. Ex: 'pest', '/usr/local/bin/pest'"
                 },
+                "better-phpunit.testDirectory": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "The top level folder underwhich all your test are placed"
+                },
                 "better-pest.xmlConfigFilepath": {
                     "type": [
                         "string",
