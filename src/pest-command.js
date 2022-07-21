@@ -46,8 +46,13 @@ module.exports = class PestCommand {
     }
 
     get filter() {
-        // let $methodWithEncodedSpaces = this.method.replaceAll(' ', '\\s')
-        return this.method ? ` --filter '^.*::${this.method}$'` : '';
+        let methodName = this.method;
+
+        if (vscode.workspace.getConfiguration('better-phpunit').get('escapeSpaces')) {
+            methodName.replaceAll(' ', '\\s');
+        }
+
+        return this.method ? ` --filter '^.*::${methodName}$'` : '';
     }
 
     get configuration() {
