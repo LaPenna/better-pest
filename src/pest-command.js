@@ -46,7 +46,8 @@ module.exports = class PestCommand {
     }
 
     get filter() {
-        return this.method ? ` --filter ${this.method}` : '';
+        // let $methodWithEncodedSpaces = this.method.replaceAll(' ', '\\s')
+        return this.method ? ` --filter '^.*::${this.method}$'` : '';
     }
 
     get configuration() {
