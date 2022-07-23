@@ -52,7 +52,7 @@ module.exports = class PestCommand {
             methodName = methodName.replaceAll(' ', '\\s');
         }
 
-        return this.method ? ` --filter '^.*::${methodName}$'` : '';
+        return this.method ? ` --filter '^.*::.*${methodName}$'` : '';
     }
 
     get configuration() {
